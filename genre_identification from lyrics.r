@@ -37,8 +37,8 @@ clean_corpus <- function(corpus) {
   corpus <- tm_map(corpus, removeWords, c(stopwords("en")))
   # Strip whitespace
   corpus <- tm_map(corpus, stripWhitespace)
-  #stemming
-  corpus <- tm_map(corpus, stemDocument, language = "english")
+  #stemming (can ignore for now)
+  #corpus <- tm_map(corpus, stemDocument, language = "english")
   return(corpus)
 }
 cleaned_corpus=clean_corpus(df_corpus)
@@ -69,15 +69,16 @@ fit <- cmdscale(dist.mat.tfidf, eig = TRUE, k = 10)
 points <- data.frame(x = fit$points[, 1], y = fit$points[, 2])
 ggplot(points, aes(x = x, y = y),color=df$genre) + geom_point(data = points, aes(x = x, y = y,color = df$genre)) + geom_text(data = points, aes(x = x, y = y - 0.2, label = row.names(df)))
 
+k=length(unique(df$genre))
 #clustering(hierarchical) using tf_idf value
 groups <- hclust(dist.mat.tfidf,method="ward.D")
 plot(groups, cex=0.9, hang=-1)
 #visualisation of clusters
-rect.hclust(groups, k=13)
+rect.hclust(groups, k)
 
 
 #clustering (k means) using tf_idf values
-cluster<-kmeans(dist.mat.tfidf,10)
+cluster<-kmeans(dist.mat.tfidf,k)
 cluster #inspection of cluster
 cluster$cluster
 table(cluster$cluster)
