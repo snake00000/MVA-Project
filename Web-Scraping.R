@@ -1,0 +1,11 @@
+##install.packages("rvest")
+library(rvest)
+
+##specify url of desired website
+url='https://rabindra-rachanabali.nltr.org/node/3619'
+webpage=read_html(url)
+kobita=html_nodes(webpage,'p')
+kobita_data=html_text(kobita)
+
+kobita_data=paste(unlist(kobita_data), collapse =" ")
+kobita_data=gsub("[\r\n]", " ",kobita_data)
