@@ -11,7 +11,9 @@ library(MASS)
 
 ##data reading
 lyrics_data = read.csv("lyrics.csv",stringsAsFactors = F)
-lyrics_data=lyrics_data[sample(1:300000,1000,replace = F),]
+#subsetting the data for ease of implementation
+subset=sample(1:300000,1000,replace = F)
+lyrics_data=lyrics_data[subset,]
 
 #str(text_data)
 colnames(lyrics_data)=c("doc_id",names(lyrics_data)[2:5],"text")
