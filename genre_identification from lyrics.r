@@ -12,7 +12,7 @@ library(MASS)
 ##data reading
 lyrics_data = read.csv("lyrics.csv",stringsAsFactors = F)
 #subsetting the data for ease of implementation
-subset=sample(1:300000,1000,replace = F)
+subset=sample(1:339277,1000,replace = F)
 lyrics_data=lyrics_data[subset,]
 
 #str(text_data)
@@ -64,6 +64,7 @@ td.mat.tfidf=lsa_space$tk%*%diag(lsa_space$sk)%*%t(lsa_space$dk)
 dist.mat.tfidf <- dist(t(as.matrix(td.mat.tfidf)),method = "cosine")
 dist.mat.tfidf  # check distance matrix
 
+df=lyrics_data
 #Multi-dimensional Scaling
 fit <- cmdscale(dist.mat.tfidf, eig = TRUE, k = 10)
 points <- data.frame(x = fit$points[, 1], y = fit$points[, 2])
