@@ -10,10 +10,14 @@ library(wordcloud)
 library(MASS)
 
 ##data reading
-lyrics_data = read.csv("lyrics.csv",stringsAsFactors = F)
-#subsetting the data for ease of implementation
-subset=sample(1:339277,1000,replace = F)
-lyrics_data=lyrics_data[subset,]
+lyrics_data_all = read.csv("lyrics.csv",stringsAsFactors = F)
+#omitting those with no lyrics
+to_omit=which(lyrics_data_all$lyrics=="")
+#working data set
+lyrics_data_all=lyrics_data_all[setdiff(1:339277,to_omit),]
+n=dim(lyrics_data_all)[1] ##no of lyrics we will take 
+subset=sample(1:n,1000,replace = F)
+lyrics_data=lyrics_data_all[subset,]
 
 #str(text_data)
 colnames(lyrics_data)=c("doc_id",names(lyrics_data)[2:5],"text")
