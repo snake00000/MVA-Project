@@ -67,7 +67,7 @@ dist.mat.tfidf  # check distance matrix
 #Multi-dimensional Scaling
 fit <- cmdscale(dist.mat.tfidf, eig = TRUE, k = 10)
 points <- data.frame(x = fit$points[, 1], y = fit$points[, 2])
-ggplot(points, aes(x = x, y = y),color=df$view) + geom_point(data = points, aes(x = x, y = y,color = df$view)) + geom_text(data = points, aes(x = x, y = y - 0.2, label = row.names(df)))
+ggplot(points, aes(x = x, y = y),color=df$genre) + geom_point(data = points, aes(x = x, y = y,color = df$genre)) + geom_text(data = points, aes(x = x, y = y - 0.2, label = row.names(df)))
 
 #clustering(hierarchical) using tf_idf value
 groups <- hclust(dist.mat.tfidf,method="ward.D")
