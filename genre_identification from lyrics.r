@@ -17,6 +17,8 @@ lyrics_data=lyrics_data[subset,]
 
 #str(text_data)
 colnames(lyrics_data)=c("doc_id",names(lyrics_data)[2:5],"text")
+df=as.data.frame(lyrics_data)
+
 #replacing \n with white spaces
 lyrics_data$text=gsub("[\r\n]", " ", lyrics_data$text)
 
@@ -64,7 +66,6 @@ td.mat.tfidf=lsa_space$tk%*%diag(lsa_space$sk)%*%t(lsa_space$dk)
 dist.mat.tfidf <- dist(t(as.matrix(td.mat.tfidf)),method = "cosine")
 dist.mat.tfidf  # check distance matrix
 
-df=lyrics_data
 #Multi-dimensional Scaling
 fit <- cmdscale(dist.mat.tfidf, eig = TRUE, k = 10)
 points <- data.frame(x = fit$points[, 1], y = fit$points[, 2])
@@ -86,8 +87,7 @@ cluster$cluster
 table(cluster$cluster)
 
 #visualisation of clusters using first 2 principal components
-plot(prcomp(dist.mat.tfidf)$x, col=cluster$cluster)
-
+ggplot(points,aes(x = x, y = y,color=cluster$cluster)) + geom_point(data = points, aes(x = x, y = y,color = cluster$cluster)) 
 
 #elbow methhod for optimal k choice
 k.max <- 15
