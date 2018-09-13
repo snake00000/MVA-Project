@@ -1,0 +1,79 @@
+```{r}
+##install.packages("rvest")
+library(rvest)
+library(tm)
+```
+
+
+```{r}
+##reading kobitas from a single page
+read_kobita=function(url){
+  webpage=read_html(url)
+  kobita=html_nodes(webpage,'p')
+  kobita_data=html_text(kobita)
+
+
+  ##Kobita editng
+  kobita_data=paste(unlist(kobita_data), collapse =" ")
+  kobita_data=gsub("[\r\n]", " ",kobita_data)
+  kobita_data=gsub("\\s+"," ",kobita_data)
+  kobita_data=gsub('[[:punct:] ]+',' ',kobita_data)
+  kobita_data
+
+
+  ##single kobita
+  #kobita_data=strsplit(kobita_data," ")[[1]]   ##uncomment this if you want each kobita as a list of words.
+  return (kobita_data)
+}
+```
+
+
+```{r}
+##reading kobita in a single porjayy
+
+##note: give url of 1st kobita in the porjayy
+#porjayy_size=3
+page_no=0
+porjayy_kobitas=list() ##to store all kobitas in the porjayy
+
+##read kobita in porjayy
+read_kobitas_porjayy=function(url){
+  page_no<<-page_no+1
+  tryCatch({
+    webpage=read_html(url)},
+    error=function(e){
+      Sys.sleep(2)
+      e
+    }
+  )
+  
+  ##read kobita in that page in porjayy
+  kobita_in_page=read_kobita(url)
+  porjayy_kobitas<<-c(porjayy_kobitas,kobita_in_page)
+  ##find next page url
+  div_id=html_nodes(webpage,'div')
+  for (i in 1:length(div_id)){
+    if (!is.na(html_attr(div_id[i],'id'))){
+      if (html_attr(div_id[i],'id')=="rightnavigation"){
+        link=html_nodes(div_id[i],"a")%>%html_attr("href")
+        break()
+      }
+    }
+  }
+  url=paste("https://rabindra-rachanabali.nltr.org",link,"")
+  url=gsub("\\s","",url)
+  print (page_no)       ## print current page number
+  if (page_no<porjayy_size){
+    read_kobitas_porjayy(url)
+  }
+  else{return (porjayy_kobitas)}
+}
+```
+
+
+```{r}
+## reading kobitas
+porjayy_size=10
+kobitas=read_kobitas_porjayy('https://rabindra-rachanabali.nltr.org/node/3648')
+```
+
