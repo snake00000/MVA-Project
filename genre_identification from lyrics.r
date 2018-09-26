@@ -63,11 +63,12 @@ initial_td.mat.tfidf<-as.matrix(weightTfIdf(initial_td.mat))
 
 ##lsa
 lsa_space=lsa(initial_td.mat.tfidf,dims=100)
-td.mat.tfidf=lsa_space$tk%*%diag(lsa_space$sk)%*%t(lsa_space$dk)
+#td.mat.tfidf=lsa_space$tk%*%diag(lsa_space$sk)%*%t(lsa_space$dk)
+doc_vec=as.matrix(lsa_space$dk)
 
 
 #cosine distance between feature vectors
-dist.mat.tfidf <- dist(t(as.matrix(td.mat.tfidf)),method = "cosine")
+dist.mat.tfidf <- dist(doc_vec,method = "cosine")
 dist.mat.tfidf  # check distance matrix
 
 #Multi-dimensional Scaling
