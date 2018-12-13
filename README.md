@@ -8,3 +8,5 @@ Download the data from https://www.kaggle.com/gyani95/380000-lyrics-from-metroly
 
 Application 2:
 Checking association between tagore songs and their genres('porjay')
+
+The final presentation and the reports are uploaded now!
